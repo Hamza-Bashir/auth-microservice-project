@@ -11,16 +11,9 @@ app.use(express.urlencoded({ extended: false }));
 
 
 
-
 app.get("/api/v1/health", (req, res) => {
   res.send("✅ Server is healthy");
 });
-
-
-
-
-
-
 
 
 
