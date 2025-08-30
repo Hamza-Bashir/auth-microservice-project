@@ -3,7 +3,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-
+const routes = require("./routes")
 
 
 const authenticate = require("./middlewares/auth.middleware");
@@ -25,7 +25,7 @@ app.get("/api/v1/health", (req, res) => {
 });
 
 
-
+app.use("/api/v1", routes)
 
 app.use(notFound);
 app.use(errorHandler);
