@@ -153,6 +153,35 @@ router.patch("/refresh-token", refreshToken)
 router.delete("/logout", logout)
 
 
+/**
+ * @swagger
+ * /api/v1/profile:
+ *   get:
+ *     summary: Get profile information
+ *     description: Get Profile
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Profile fetched successfully
+ *       401:
+ *         description: No token provided
+ *       403:
+ *         description: Token is not valid
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ */
+
 router.get("/profile", profile)
 
 
