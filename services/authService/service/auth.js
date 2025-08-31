@@ -51,12 +51,9 @@ const loginUser = asyncHandler(async (req,res,next) => {
         return next(new AppError(message.AUTH.NOT_FOUND, code.NOT_FOUND))
     }
 
-    const isMatch = await bcrypt.compare(password, existingUser.hashPassword)
-    
+    const isMatched = await axios.post("http://localhost:4002/api/v1/compare-password", {plainPassword:password, hashPassword:existingUser.hashPassword})
 
-    if(!isMatch){
-        return next(new AppError("Password cannot match", 401))
-    }
+   
 
     const token = signJwtToken({id:existingUser._id, name:existingUser.name, role:existingUser.role})
 
