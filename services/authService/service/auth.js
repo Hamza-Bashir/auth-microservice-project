@@ -111,5 +111,35 @@ const profile = asyncHandler(async (req,res,next) => {
 })
 
 
-module.exports = {registerUser, loginUser, refreshToken, logout, profile}
+// -------------- change password ----------------
+
+const changePassword = asyncHandler(async (req,res,next) => {
+    
+    const {id} = req.user
+    const {oldPassword, newPassword, confirmNewPassword} = req.body
+
+    const existingUser = await User.findOne({_id:id})
+
+    if(oldPassword !== existingUser.plainPassword){
+        return next(new AppError("Old password cannot exist", 409))
+    }
+
+    if(newPassword !== confirmNewPassword){
+        return next(new AppError("New password cannot matched with confirm password"))
+    }
+
+    const newHashPassword = await bcrypt.hash(newPassword, 10)
+
+    existingUser.plainPassword = newPassword
+    existingUser.hashPassword = newHashPassword
+
+    await existingUser.save()
+
+    response(res, 200, true, "Password reset successfully")
+
+
+})
+
+
+module.exports = {registerUser, loginUser, refreshToken, logout, profile, changePassword}
 

@@ -1,5 +1,5 @@
 const router = require("express").Router()
-const {registerUser, loginUser, refreshToken, logout, profile} = require("./service/auth")
+const {registerUser, loginUser, refreshToken, logout, profile, changePassword} = require("./service/auth")
 const validate = require("../../shared/middlewares/validate")
 const {registerSchema, loginSchema} = require("./validation/auth.validate")
 
@@ -183,6 +183,9 @@ router.delete("/logout", logout)
  */
 
 router.get("/profile", profile)
+
+
+router.patch("/change-password", changePassword)
 
 
 module.exports = router
