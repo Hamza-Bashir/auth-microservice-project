@@ -1,5 +1,5 @@
 const router = require("express").Router()
-const {registerUser, loginUser} = require("./service/auth")
+const {registerUser, loginUser, refreshToken} = require("./service/auth")
 const validate = require("../../shared/middlewares/validate")
 const {registerSchema, loginSchema} = require("./validation/auth.validate")
 
@@ -83,6 +83,9 @@ router.post("/register-user", validate(registerSchema), registerUser)
  */
 
 router.post("/login-user", validate(loginSchema), loginUser)
+
+
+router.patch("/refresh-token", refreshToken)
 
 
 module.exports = router

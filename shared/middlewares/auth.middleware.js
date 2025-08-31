@@ -11,9 +11,9 @@ const authenticate = (req, res, next) => {
   if (!token) {
     return res.status(401).json({ message: "Invalid token format" });
   }
-
+  
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_KEY);
     req.user = decoded;
     next();
   } catch (err) {
@@ -21,7 +21,7 @@ const authenticate = (req, res, next) => {
   }
 };
 
-// 👇 ab middleware par `.unless` attach ho jayega
+
 authenticate.unless = unless;
 
 module.exports = authenticate;

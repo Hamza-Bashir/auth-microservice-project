@@ -8,6 +8,7 @@ const AppError = require("../../../shared/utilis/AppError")
 const {signJwtToken} = require("../../../shared/utilis/jwtToken")
 
 
+
 // -------------- register user ----------------
 
 const registerUser = asyncHandler(async (req,res, next) => {
@@ -60,9 +61,26 @@ const loginUser = asyncHandler(async (req,res,next) => {
     existingUser.token = token
     await existingUser.save()
 
-    response(res, 200, true, "Login Successfully")
+    response(res, 200, true, "Login Successfully", {token:token, name:existingUser.name, email:existingUser.email, role:existingUser.role})
 })
 
 
-module.exports = {registerUser, loginUser}
+// -------------- refresh token ----------------
+
+const refreshToken = asyncHandler(async (req,res,next) => {
+    const {id} = req.user
+
+    const existingUser = await User.findOne({_id:id})
+
+    const token = signJwtToken({id:existingUser._id, name:existingUser.name, email:existingUser._email})
+
+    existingUser.token = token
+
+    await existingUser.save()
+
+    response(res, 200, true, "Token refresh successfully", {newToken:token})
+})
+
+
+module.exports = {registerUser, loginUser, refreshToken}
 
