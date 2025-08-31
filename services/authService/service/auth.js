@@ -6,6 +6,7 @@ const bcrypt = require("bcryptjs")
 const response = require("../../../shared/utilis/sendResponse")
 const AppError = require("../../../shared/utilis/AppError")
 const {signJwtToken} = require("../../../shared/utilis/jwtToken")
+const axios = require("axios")
 
 
 
@@ -19,8 +20,11 @@ const registerUser = asyncHandler(async (req,res, next) => {
     if(existingUser){
         return next(new AppError(message.AUTH.ALREADY_REGISTER, code.CONFLICT))
     }
+    
+    const hashpass = await axios.post("http://localhost:4002/api/v1/hash-password", {password})
+    
 
-    const hashPassword = await bcrypt.hash(password, 10)
+    const hashPassword = hashpass.data.data.hashpass
 
 
     await User.create({
@@ -32,6 +36,7 @@ const registerUser = asyncHandler(async (req,res, next) => {
     })
 
     response(res, 200, true, message.AUTH.REGISTER_SUCCESS)
+    
 })
 
 
@@ -139,6 +144,13 @@ const changePassword = asyncHandler(async (req,res,next) => {
 
 
 })
+
+// -------------- forget password ----------------
+
+
+
+
+// -------------- verified user ----------------
 
 
 module.exports = {registerUser, loginUser, refreshToken, logout, profile, changePassword}
