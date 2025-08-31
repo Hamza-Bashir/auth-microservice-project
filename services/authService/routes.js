@@ -85,6 +85,38 @@ router.post("/register-user", validate(registerSchema), registerUser)
 router.post("/login-user", validate(loginSchema), loginUser)
 
 
+/**
+ * @swagger
+ * /api/v1/refresh-token:
+ *   patch:
+ *     summary: Refresh token
+ *     description: Use a refresh token sent in Authorization header to get a new access token
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Token refresh successfully
+ *       401:
+ *         description: No token provided
+ *       403:
+ *         description: Token is not valid
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ */
+
+
+
+
 router.patch("/refresh-token", refreshToken)
 
 
