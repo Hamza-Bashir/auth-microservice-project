@@ -1,5 +1,5 @@
 const router = require("express").Router()
-const {registerUser, loginUser, refreshToken} = require("./service/auth")
+const {registerUser, loginUser, refreshToken, logout, profile} = require("./service/auth")
 const validate = require("../../shared/middlewares/validate")
 const {registerSchema, loginSchema} = require("./validation/auth.validate")
 
@@ -118,6 +118,42 @@ router.post("/login-user", validate(loginSchema), loginUser)
 
 
 router.patch("/refresh-token", refreshToken)
+
+
+
+/**
+ * @swagger
+ * /api/v1/logout:
+ *   delete:
+ *     summary: Logout user
+ *     description: Logout a user
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Logout successfully
+ *       401:
+ *         description: No token provided
+ *       403:
+ *         description: Token is not valid
+ *       500:
+ *         description: Internal server error
+ */
+
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ */
+
+router.delete("/logout", logout)
+
+
+router.get("/profile", profile)
 
 
 module.exports = router

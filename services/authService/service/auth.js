@@ -82,5 +82,34 @@ const refreshToken = asyncHandler(async (req,res,next) => {
 })
 
 
-module.exports = {registerUser, loginUser, refreshToken}
+// -------------- logout ----------------
+
+const logout = asyncHandler(async (req,res,next) => {
+    
+    const {id} = req.user
+
+    const existingUser = await User.findOne({_id:id})
+
+    existingUser.token = null
+
+    await existingUser.save()
+
+    response(res, 200, true, "Logout successfully")
+})
+
+
+// -------------- profile ----------------
+
+const profile = asyncHandler(async (req,res,next) => {
+    
+    const {id} = req.user
+
+    const existingUser = await User.findOne({_id:id}).select("name email role isVerified hashPassword")
+
+    response(res, 200, true, "Profile fetched successfully", {existingUser})
+
+})
+
+
+module.exports = {registerUser, loginUser, refreshToken, logout, profile}
 
