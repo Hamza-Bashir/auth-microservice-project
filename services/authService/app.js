@@ -5,7 +5,8 @@ require("dotenv").config();
 const app = express();
 const routes = require("./routes")
 
-
+const setupSwagger = require("./swagger")
+setupSwagger(app)
 const authenticate = require("../../shared/middlewares/auth.middleware");
 const authenticateRoutes = require("./config/unlessRoutes");
 
@@ -29,5 +30,7 @@ app.use("/api/v1", routes)
 
 app.use(notFound);
 app.use(errorHandler);
+
+
 
 module.exports = app;
