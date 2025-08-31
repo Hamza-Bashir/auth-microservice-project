@@ -1,11 +1,11 @@
 const User = require("../model/user.model")
-const code = require("../constants/httpStatus")
-const message = require("../constants/messages")
-const asyncHandler = require("../utilis/asyncHandler")
+const code = require("../../../shared/constants/httpStatus")
+const message = require("../../../shared/constants/messages")
+const asyncHandler = require("../../../shared/utilis/asyncHandler")
 const bcrypt = require("bcryptjs")
-const response = require("../utilis/sendResponse")
-const AppError = require("../utilis/AppError")
-const {signJwtToken} = require("../utilis/jwtToken")
+const response = require("../../../shared/utilis/sendResponse")
+const AppError = require("../../../shared/utilis/AppError")
+const {signJwtToken} = require("../../../shared/utilis/jwtToken")
 
 
 // -------------- register user ----------------

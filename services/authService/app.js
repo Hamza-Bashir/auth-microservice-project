@@ -6,12 +6,12 @@ const app = express();
 const routes = require("./routes")
 
 
-const authenticate = require("./middlewares/auth.middleware");
+const authenticate = require("../../shared/middlewares/auth.middleware");
 const authenticateRoutes = require("./config/unlessRoutes");
 
 app.use(authenticate.unless({ path: authenticateRoutes }));
-const errorHandler = require("./middlewares/error.middleware");
-const notFound = require("./middlewares/notFound");
+const errorHandler = require("../../shared/middlewares/error.middleware");
+const notFound = require("../../shared/middlewares/notFound");
 
 app.use(cors());
 app.use(express.json());
