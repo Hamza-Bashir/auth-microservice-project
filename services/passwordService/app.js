@@ -6,7 +6,7 @@ const app = express();
 const routes = require("./route")
 
 
-
+const errorHandler = require("../../shared/middlewares/error.middleware");
 
 
 
@@ -25,7 +25,7 @@ app.get("/api/v1/health", (req, res) => {
 app.use("/api/v1", routes)
 
 
-
+app.use(errorHandler)
 
 
 module.exports = app;
