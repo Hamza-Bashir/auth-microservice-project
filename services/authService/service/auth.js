@@ -53,6 +53,13 @@ const loginUser = asyncHandler(async (req,res,next) => {
 
     const isMatched = await axios.post("http://localhost:4002/api/v1/compare-password", {plainPassword:password, hashPassword:existingUser.hashPassword})
 
+    const isMatch = isMatched.data.data.isMatch
+    
+
+    if(!isMatch){
+        return next(new AppError("Password cannot matched", 409))
+    }
+
    
 
     const token = signJwtToken({id:existingUser._id, name:existingUser.name, role:existingUser.role})

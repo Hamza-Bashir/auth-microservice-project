@@ -30,9 +30,7 @@ const comparePassword = asyncHandler(async (req,res,next) => {
 
     const isMatch = await bcrypt.compare(plainPassword, hashPassword)
 
-    if(!isMatch){
-        return next(new AppError("Password cannot match"))
-    }
+    
 
     response(res, 200, true, "Password matched successfully", {isMatch})
 
