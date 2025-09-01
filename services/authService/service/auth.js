@@ -137,10 +137,17 @@ const changePassword = asyncHandler(async (req,res,next) => {
         return next(new AppError("New password cannot matched with confirm password"))
     }
 
-    const newHashPassword = await bcrypt.hash(newPassword, 10)
+    const newHashPassword = await axios.post("http://localhost:4002/api/v1/hash-password", {password:newPassword})
+
+    
+    
+
+    const newHassPass = newHashPassword.data.data.hashpass
+
+    
 
     existingUser.plainPassword = newPassword
-    existingUser.hashPassword = newHashPassword
+    existingUser.hashPassword = newHassPass
 
     await existingUser.save()
 
