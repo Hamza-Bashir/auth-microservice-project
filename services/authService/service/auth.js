@@ -122,39 +122,41 @@ const profile = asyncHandler(async (req,res,next) => {
 
 // -------------- change password ----------------
 
-const changePassword = asyncHandler(async (req,res,next) => {
-    
-    const {id} = req.user
-    const {oldPassword, newPassword, confirmNewPassword} = req.body
-
-    const existingUser = await User.findOne({_id:id})
-
-    if(oldPassword !== existingUser.plainPassword){
-        return next(new AppError("Old password cannot exist", 409))
+const changePassword = asyncHandler(async (req, res, next) => {
+    const { id } = req.user;
+    const { oldPassword, newPassword, confirmNewPassword } = req.body;
+  
+    const existingUser = await User.findOne({ _id: id });
+  
+    let successResponse;
+    try {
+      const changepasswordapi = await axios.post("http://localhost:4002/api/v1/change-password", {
+        oldpassword: oldPassword,
+        existingpassword: existingUser.plainPassword,
+        newpassword: newPassword,
+        confirmnewpassword: confirmNewPassword
+      });
+  
+      successResponse = changepasswordapi.data;
+    } catch (err) {
+      if (err.response) {
+        return next(new AppError(err.response.data.messages || "Change password failed", err.response.status || 409));
+      } else {
+        return next(new AppError(err.message, 500));
+      }
     }
-
-    if(newPassword !== confirmNewPassword){
-        return next(new AppError("New password cannot matched with confirm password"))
-    }
-
-    const newHashPassword = await axios.post("http://localhost:4002/api/v1/hash-password", {password:newPassword})
-
+  
     
-    
-
-    const newHassPass = newHashPassword.data.data.hashpass
-
-    
-
-    existingUser.plainPassword = newPassword
-    existingUser.hashPassword = newHassPass
-
-    await existingUser.save()
-
-    response(res, 200, true, "Password reset successfully")
-
-
-})
+    const newHashPass = successResponse.data.hashpassword;
+  
+    existingUser.plainPassword = newPassword;
+    existingUser.hashPassword = newHashPass;
+  
+    await existingUser.save();
+  
+    response(res, 200, true, "Password reset successfully");
+  });
+  
 
 // -------------- forget password ----------------
 
